@@ -1,0 +1,1181 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Where did the OO go?</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <style>
+      img.no-border {
+        border: 0 !important;
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0) !important;
+      }
+
+      img.no-adjust-background {
+        background: rgba(255, 255, 255, 0) !important;
+      }
+
+      div.center-horizontal {
+        width: 50%;
+        margin: 0 auto;
+      }
+
+      section.big-code-class {
+        width: 900px !important;
+      }
+
+      section.big-code-class pre { height: 100%; width: 90%; }
+      section.big-code-class code { height: 100%; width: 90%; max-height: 10000px; max-height: 768px; }
+
+      .title-slide h1, .title-slide h2, .title-slide h4 {
+        color: black !important;
+      }
+
+      .title-slide a {
+        color: blue !important;
+      }
+
+      .iframe-fullscreen section, .fullscreen section {
+        height: 100%;
+      }
+
+      .fullscreen code {
+        max-height: 90% !important;
+      }
+
+      .iframe-fullscreen section iframe {
+        height: 92%;
+        width: 92%;
+      }
+
+      table.center {
+        margin: 0px auto;
+      }
+
+      table.center, table.center th, table.center td {
+        border: 1px solid gray;
+        border-collapse: collapse;
+      }
+
+      table.center th {
+        background: white;
+        color: black;
+        border: 3px solid gray;
+        border-collapse: collapse;
+      }
+
+      table.center th, table.center td {
+        padding: 0.3em;
+      }
+
+      td.checky, td.exey, td.neutral {
+        font-size: 1.7em;
+        text-align: center !important;
+        vertical-align: middle;
+      }
+
+      td.checky { color: green; }
+      td.exey { color: red; }
+
+      ol, ul { font-size: 1.2em !important; }
+      ol li, ul li { margin-top: 30px !important; }
+    </style>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section class="title-slide" data-background-image="images/image_0.png">
+          <h1>Rails Holy Grail</h1>
+          <h2 style="margin-top: 50px">Where did the OO go? Views should be objects too!</h2>
+          <h4 style="margin-top: 50px">Andrew Warner (<a href="https://twitter.com/wwarner">@wwarner</a>)</h4>
+          <h4 style="margin-top: 50px">Rap Genius (<a href="https://twitter.com/RapGenius">@RapGenius</a>)</h4>
+
+          <aside class="notes">
+          Hello I’m Andrew Warner, I’m the director of engineering at Rap Genius. We’re explaining all of text,
+          and bringing annotation to the entire internet. Follow me at @wwarner, and follow Rap Genius at
+          @RapGenius on the tweeter.
+          </aside>
+        </section>
+
+        <section>
+          <h2>In this talk!</h2>
+          <ol>
+            <li class="fragment">What is the holy grail?</li>
+            <li class="fragment">Existing Rails solutions</li>
+            <li class="fragment">A new solution (for your consideration!)</li>
+            <li class="fragment">What else does this new solution give us?</li>
+          </ol>
+        </section>
+
+        <section data-background-size="110%" data-background="images/image_1.png">
+          <h2>The Holy Grail of the web</h2>
+          <ul style="font-size: 1em !important;">
+            <li style="margin-top: 0px !important;" class="fragment">Best possible user experience</li>
+            <li style="margin-top: 0px !important;" class="fragment">Best possible developer experience</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>The Holy Grail of the web</h2>
+          <h4>Best possible user experience<span class="fragment">— Single page app / "Thick" client</span></h4>
+          <div>
+            <img class="fragment" style="float: left;" height="300px" src="images/image_2.png">
+            <ol style="float: left; margin-left: 60px; margin-top: 50px">
+              <li class="fragment">No full page reloads</li>
+              <li class="fragment">Feels like a native desktop or mobile app</li>
+            </ol>
+          </div>
+        </section>
+
+        <section>
+          <h2>The Holy Grail of the web</h2>
+          <h3>Best possible developer experience</h3>
+          <ol>
+            <li class="fragment">Developer friendly framework<span class="fragment">– Ruby/Rails!</span></li>
+            <li class="fragment">DRY (don't repeat yourself) <span class="fragment">– DRV</span></li>
+            <li class="fragment">Write (mostly) one language</li>
+            <li class="fragment">SEO friendly</li>
+          </ol>
+        </section>
+
+        <section>
+          <img src="images/image_3.png">
+          <h2>The closest thing out there today...<span class="fragment">Node.js?</span></h2>
+        </section>
+
+        <section data-state="fullscreen">
+          <img src="images/image_4.png">
+          <h2><a href="https://github.com/rendrjs/rendr">Airbnb Rendr</a></h2>
+          <ul>
+            <li class="fragment">Write backbone js client side code</li>
+            <li class="fragment">Client incrementally updates page</li>
+            <li class="fragment">Server renders full html pages for deep links</li>
+          </ul>
+
+          <aside class="notes">
+            <ul>
+              <li>Best solution out there today is Rendr</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section data-state="iframe-fullscreen" style="top: 0px">
+          <iframe src="http://railsgenius.herokuapp.com/talks/1"></iframe>
+          <aside class="notes">
+            <ul>
+              <li>It’s a “modern” webapp, written in Node</li>
+              <li>Write notes on RailsConf abstracts</li>
+              <li>And why is it modern? We’re not duplicating code</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section>
+          <table class="center" border="1">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th>Rendr / Node.js</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>DRY<br>(no duplicate views)</td>
+                <td class="checky fragment">✓</td>
+              </tr>
+              <tr>
+                <td>SEO Friendly</td>
+                <td class="checky fragment">✓</td>
+              </tr>
+              <tr>
+                <td>"Thick" client</td>
+                <td class="checky fragment">✓</td>
+              </tr>
+              <tr>
+                <td>Mostly write one language</td>
+                <td class="checky fragment">✓</td>
+              </tr>
+              <tr>
+                <td>Rails?</td>
+                <td class="exey fragment">X</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section data-background="images/image_5.png">
+          <!-- left in the dust -->
+          <div>
+            <img src="images/image_6.png">
+          </div>
+
+          <aside class="notes">
+            <ul>
+              <li>Rails getting left in the dust</li>
+              <li>Is nobody else upset about this?</li>
+              <li>Node js is eating our lunch</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section>
+          <h2>In this talk!</h2>
+          <ol>
+            <li><strike>What is the holy grail?</strike></li>
+            <li><b style="color: orange;">Existing Rails solutions</b></li>
+            <li>A new solution (for your consideration!)</li>
+            <li>What else does this new solution give us?</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>Duplicate code on client and server</h2>
+          <ul>
+            <li class="fragment">Write ERB/HAML views on the server</li>
+            <li class="fragment">Server has an API for the client</li>
+            <li class="fragment">Client side keeps mustache or underscore js templates</li>
+          </ul>
+        </section>
+
+        <section>
+          <table class="center" border="1">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th>Rendr / Node.js</th>
+                <th>Duplicate Code</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>DRY<br>(no duplicate views)</td>
+                <td class="checky">✓</td>
+                <td class="exey fragment">X</td>
+              </tr>
+              <tr>
+                <td>SEO Friendly</td>
+                <td class="checky">✓</td>
+                <td class="checky fragment">✓</td>
+              </tr>
+              <tr>
+                <td>"Thick" client</td>
+                <td class="checky">✓</td>
+                <td class="checky fragment">✓</td>
+              </tr>
+              <tr>
+                <td>Mostly write one language</td>
+                <td class="checky">✓</td>
+                <td class="exey fragment">X</td>
+              </tr>
+              <tr>
+                <td>Rails?</td>
+                <td class="exey">X</td>
+                <td class="neutral fragment">&frac12;</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section data-background-size="90%" data-background="images/image_7.png">
+        </section>
+
+        <section>
+          <img src="images/image_8.png"
+               style="margin-left: 50px; float: left; width: 200px;">
+          <div style="margin-left: 10px; float: left">
+            <h2>Turbolinks</h2>
+            <ul>
+              <li class="fragment">Write just server-side HAML/ERB views</li>
+              <li class="fragment">Pop in new pages without losing the browser instance</li>
+              <li class="fragment">Client is extremely simple</li>
+              <li class="fragment">That's it! Nowhere else to go</li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <table class="center" border="1">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th>Rendr / Node.js</th>
+                <th>Duplicate Code</th>
+                <th>Turbolinks</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>DRY<br>(no duplicate views)</td>
+                <td class="checky">✓</td>
+                <td class="exey">X</td>
+                <td class="checky fragment">✓</td>
+              </tr>
+              <tr>
+                <td>SEO Friendly</td>
+                <td class="checky">✓</td>
+                <td class="checky">✓</td>
+                <td class="checky fragment">✓</td>
+              </tr>
+              <tr>
+                <td>"Thick" client</td>
+                <td class="checky">✓</td>
+                <td class="checky">✓</td>
+                <td class="exey fragment">X</td>
+              </tr>
+              <tr>
+                <td>Mostly write one language</td>
+                <td class="checky">✓</td>
+                <td class="exey">X</td>
+                <td class="checky fragment">✓</td>
+              </tr>
+              <tr>
+                <td>Rails?</td>
+                <td class="exey">X</td>
+                <td class="neutral">&frac12;</td>
+                <td class="checky fragment">✓</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <div style="margin: 0px auto; height: 150px; width: 60%">
+            <img style="float: left; height: 150px;" src="images/image_9.png">
+            <img style="float: left; height: 150px;" src="images/image_10.png">
+            <img style="float: left; height: 150px;" src="images/image_11.png">
+          </div>
+
+          <h2 style="clear: both;">Ember/Angular/Backbone</h2>
+          <ul>
+            <li class="fragment">Server has an API for the client</li>
+            <li class="fragment">Entire "app" experience lives on client</li>
+            <li class="fragment">Initial page load downloads entire JS "app", builds page</li>
+            <li class="fragment">"New" twitter <span class="fragment">– 10 seconds to load a 140 character tweet!</li>
+          </ul>
+        </section>
+
+        <section>
+          <table class="center" border="1" style="font-size: 0.7em">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th>Rendr / Node.js</th>
+                <th>Duplicate Code</th>
+                <th>Turbolinks</th>
+                <th>Ember / Angular / Backbone</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>DRY<br>(no duplicate views)</td>
+                <td class="checky">✓</td>
+                <td class="exey">X</td>
+                <td class="checky">✓</td>
+                <td class="checky fragment">✓</td>
+              </tr>
+              <tr>
+                <td>SEO Friendly</td>
+                <td class="checky">✓</td>
+                <td class="checky">✓</td>
+                <td class="checky">✓</td>
+                <td class="exey fragment">X</td>
+              </tr>
+              <tr>
+                <td>"Thick" client</td>
+                <td class="checky">✓</td>
+                <td class="checky">✓</td>
+                <td class="exey">X</td>
+                <td class="checky fragment">✓</td>
+              </tr>
+              <tr>
+                <td>Mostly write one language</td>
+                <td class="checky">✓</td>
+                <td class="exey">X</td>
+                <td class="checky">✓</td>
+                <td class="exey fragment">X</td>
+              </tr>
+              <tr>
+                <td>Rails?</td>
+                <td class="exey">X</td>
+                <td class="neutral">&frac12;</td>
+                <td class="checky">✓</td>
+                <td class="neutral fragment">&frac12;</td>
+              </tr>
+            </tbody>
+          </table>
+          <h2 class="fragment">Each of these makes key tradeoffs!</h2>
+        </section>
+
+        <section>
+          <h2>In this talk!</h2>
+          <ol>
+            <li><strike>What is the holy grail?</strike></li>
+            <li><strike>Existing Rails solutions</strike></li>
+            <li><b style="color: orange;">A new solution (for your consideration!)</b></li>
+            <li>What else does this new solution give us?</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>I lied...</h2>
+        </section>
+
+        <section data-state="iframe-fullscreen" style="top: 0px">
+          <iframe src="http://railsgenius.herokuapp.com/talks/1"></iframe>
+        </section>
+
+        <section>
+          <h2>"Perspectives"</h2>
+          <aside class="notes">
+            <ul>
+              <li>Remind ourselves what this means</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section>
+          <table class="center" border="1" style="font-size: 0.7em">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th>Perspectives</th>
+                <th>Rendr / Node.js</th>
+                <th>Duplicate Code</th>
+                <th>Turbolinks</th>
+                <th>Ember / Angular / Backbone</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>DRY<br>(no duplicate views)</td>
+                <td class="checky fragment">✓</td>
+                <td class="checky">✓</td>
+                <td class="exey">X</td>
+                <td class="checky">✓</td>
+                <td class="checky">✓</td>
+              </tr>
+              <tr>
+                <td>SEO Friendly</td>
+                <td class="checky fragment">✓</td>
+                <td class="checky">✓</td>
+                <td class="checky">✓</td>
+                <td class="checky">✓</td>
+                <td class="exey">X</td>
+              </tr>
+              <tr>
+                <td>"Thick" client</td>
+                <td class="checky fragment">✓</td>
+                <td class="checky">✓</td>
+                <td class="checky">✓</td>
+                <td class="exey">X</td>
+                <td class="checky">✓</td>
+              </tr>
+              <tr>
+                <td>Mostly write one language</td>
+                <td class="checky fragment">✓</td>
+                <td class="checky">✓</td>
+                <td class="exey">X</td>
+                <td class="checky">✓</td>
+                <td class="exey">X</td>
+              </tr>
+              <tr>
+                <td>Rails?</td>
+                <td class="checky fragment">✓</td>
+                <td class="exey">X</td>
+                <td class="neutral">&frac12;</td>
+                <td class="checky">✓</td>
+                <td class="neutral">&frac12;</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h3>Same template on the client/server?</h3>
+          <pre style="font-size: 0.9em; width: 50%" class="fragment"><code data-trim contenteditable class="mel">
+<%= link_to user.name, user_url(user) %>
+          </code></pre>
+          <pre style="font-size: 0.9em; width: 80%" class="fragment"><code style="overflow: hidden;" data-trim contenteditable class="mel">
+<%= link_to "Quote of the day",
+  ActiveRecord::Base.connection.execute(<<-SQL).first['url']
+    SELECT url FROM quotes_of_the_day ORDER BY Random() LIMIT 1
+  SQL
+%>
+          </code></pre>
+
+          <aside class="notes">
+            <ul>
+              <li>Want to share templates between client and server</li>
+              <li>Can we use an ERB template on the client?</li>
+              <li>ERB seems like we might be able to render on the client..</li>
+              <li>Means "Embedded Ruby" – need more than just a ruby=>js processor</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section>
+          <h2>Lowest common denominator</h2>
+          <img class="fragment" src="images/image_12.png">
+          <h2 class="fragment">= dumbest possible templates</h2>
+
+          <aside class="notes">
+            <ul>
+              <li>Lowest common denominator between client and server</li>
+              <li>Something server/client both understand</li>
+              <li>Dumbest possible templates</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section>
+          <h2>Dumbest = {{mustache}}</h2>
+          <h2 class="fragment">Logic-less?<span class="fragment">&nbsp;= can't run arbitrary code!</span></h2>
+          <aside class="notes">
+            <ul>
+              <li>The dumbest thing the client and server can understand is mustache</li>
+              <li></li>
+            </ul>
+          </aside>
+        </section>
+
+        <section data-background-size="90%" data-background="images/mustache_github_io.png">
+        </section>
+
+        <section data-background-size="90%" data-background='images/image_13.png'>
+        </section>
+
+        <section data-background-size="80%" data-background='images/image_14.png'>
+        </section>
+
+        <section data-background-size="80%" data-background='images/referent_highlighted.png'>
+        </section>
+
+        <section data-background-size="80%" data-background='images/body_highlighted.png'>
+        </section>
+
+        <section data-background-size="80%" data-background='images/edit_highlighted.png'>
+        </section>
+
+        <section>
+          <h2>Mustache</h2>
+          <pre class="fragment" style="font-size: 1em; width: 90%;"><code data-trim contenteditable>
+<blockquote>
+  {{referent}}
+</blockquote>
+
+{{{body}}}
+
+{{#edit}}
+<a href="{{edit_href}}">Edit</a>
+{{/edit}}
+          </code></pre>
+          <pre class="fragment" style="font-size: 1em; width: 90%;"><code style="overflow: hidden;" data-trim contenteditable>
+{
+  referent: "node.js",
+  body: '<a href="http://nodejs.org/">node.js</a> is a platform...',
+  edit: true,
+  edit_href: '/talks/1/annotations/3/edit'
+}
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Mustache – "tags"</h2>
+          <pre style="font-size: 1em; width:60%;"><code data-trim contenteditable>
+{
+  referent: "node.js",
+  ...
+}
+          </code></pre>
+          <pre class="fragment" style="font-size: 1em; width:60%;"><code data-trim contenteditable>
+<blockquote>{{referent}}</blockquote>
+          </pre></code>
+          <p class="fragment">'&lt;blockquote&gt;node.js&lt;/blockquote&gt;'</p>
+        </section>
+
+        <section>
+          <h2>Mustache – "tags"</h2>
+          <pre style="font-size: 1em; width: 90%;"><code style="overflow: hidden;" data-trim contenteditable>
+{
+  ...
+  body: '<a href="http://nodejs.org/">node.js</a> is a platform...',
+  ...
+}
+          </code></pre>
+          <pre class="fragment" style="font-size: 1em; width:60%;"><code data-trim contenteditable>
+{{{body}}}
+          </pre></code>
+          <p class="fragment">'&lt;a href=&quot;http://nodejs.org/&quot;&gt;node.js&lt;/a&gt; is a platform...'</p>
+        </section>
+
+        <section>
+          <h2>Mustache – "tags"</h2>
+          <pre style="font-size: 1em; width:60%;"><code data-trim contenteditable>
+{
+  ...
+  edit: true,
+  edit_href: '/talks/1/annotations/3/edit'
+}
+          </code></pre>
+          <pre class="fragment" style="font-size: 1em; width:60%;"><code data-trim contenteditable>
+{{#edit}}
+  <a href="{{edit_href}}">Edit</a>
+{{/edit}}
+          </pre></code>
+          <p class="fragment">'&lt;a href=&quot;/talks/1/annotations/3/edit&quot;&gt;Edit&lt;/a&gt;'</p>
+        </section>
+
+        <section>
+          <h2>Mustache – "tags"</h2>
+          <pre style="font-size: 1em; width:60%;"><code data-trim contenteditable>
+{
+  edit: false,
+  ...
+}
+          </code></pre>
+          <pre class="fragment" style="font-size: 1em; width:50%;"><code data-trim contenteditable>
+{{^edit}} Can't edit! {{/edit}}
+          </pre></code>
+          <p class="fragment">'Can't edit!'</p>
+        </section>
+
+        <section>
+          <h2>How does this help?</h2>
+          <pre class="fragment" style="width: 90%; font-size: 1em;"><code data-trim contenteditable>
+<blockquote>
+  {{referent}}
+</blockquote>
+ 
+{{{body}}}
+ 
+{{#edit}}
+<a href="{{edit_href}}">Edit</a>
+{{/edit}}
+          </code></pre>
+          <pre class="fragment" style="width: 90%; font-size: 1em;"><code style="overflow: hidden;" data-trim contenteditable>
+{
+  referent: "node.js",
+  body: '<a href="http://nodejs.org/">node.js</a> is a platform...',
+  edit: true,
+  edit_href: '/talks/1/annotations/3/edit'
+}
+          </code></pre>
+          <aside class="notes">
+            <ul>
+              <li>If we have this template, all we need to render it is this hash</li>
+              <li>Since there is a server and client implementation of mustache, we can clearly render both places</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section>
+          <h2>Generate this hash how?</h2>
+          <h2 class="fragment">Perspectives!</h2>
+          <aside class="notes">
+            <ul>
+              <li>The essence of the perspectives library</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section data-background-size="90%" data-background="images/image_15.png">
+        </section>
+
+        <section data-background-size="90%" data-background="images/image_16.png">
+        </section>
+
+        <section data-background-size="90%" data-background="images/image_17.png">
+        </section>
+
+        <section data-background-size="90%" data-background="images/image_18.png">
+        </section>
+
+        <section>
+          <h2>Perspective</h2>
+          <pre class="fragment" style="width:70%; font-size: 0.7em"><code data-trim contenteditable class="ruby">
+class Annotations::Show < Perspectives::Base
+  param :annotation # param = input
+
+  property(:referent) { annotation.referent }
+  property(:body) { annotation.body_as_html }
+  # property = output
+
+  property(:edit) do
+    annotation.created_by == current_user || current_user.admin?
+  end
+
+  property(:edit_href) { edit_annotation_path(annotation) }
+end
+          </code></pre>
+
+        </section>
+
+        <section>
+          <h2>Perspective</h2>
+          <pre style="width:65%; font-size: 1em"><code data-trim contenteditable class="ruby">
+class Annotations::Show < Perspectives::Base
+  param :annotation
+  # param = input
+  # ...
+end
+          </code></pre>
+
+        </section>
+
+        <section>
+          <h2>Perspective</h2>
+          <pre style="width:65%; font-size: 1em"><code data-trim contenteditable class="ruby">
+class Annotations::Show < Perspectives::Base
+  property(:referent) { annotation.referent }
+  property(:body) { annotation.body_as_html }
+  # property = output
+  # ...
+end
+          </code></pre>
+
+        </section>
+
+        <section>
+          <h2>Perspective</h2>
+          <pre style="width:65%; font-size: 1em"><code data-trim contenteditable class="ruby">
+class Annotations::Show < Perspectives::Base
+  property(:referent) { annotation.referent }
+  property(:body) { annotation.body_as_html }
+  # ...
+end
+          </code></pre>
+          <pre class="fragment" style="width: 65%; font-size: 1em; overflow: hidden;"><code style="overflow: hidden;" data-trim contenteditable>
+{
+  referent: "node.js",
+  body: '<a href="http://nodejs.org/">node.js</a> is a platform...',
+  edit: true,
+  edit_href: '/talks/1/annotations/3/edit'
+}
+          </code></pre>
+        </section>
+
+        <section data-background-size="90%" data-background="images/image_19.png">
+          <aside class="notes">
+            <ul>
+              <li>Isn't this just helpers?</li>
+              <li>No! No function calls in templates</li>
+            </ul>
+        </section>
+
+        <section data-background-size="90%" data-background="images/image_20.png">
+          <aside class="notes">
+            <ul>
+              <li>Initial request asks for HTML</li>
+              <li>Subsequent for JSON</li>
+              <li>Behaves like turbolinks</li>
+            </ul>
+        </section>
+
+        <!-- <section> -->
+        <!--   <1!-- TODO --1> -->
+        <!--   <h2>Partial Rendering</h2> -->
+        <!-- </section> -->
+
+        <section>
+          <h2>HTML = unstructured data</h2>
+          <h2 class="fragment">JSON = structured data</h2>
+          <h2 class="fragment">Couple client with structured data!</h2>
+        </section>
+
+        <section>
+          <h2>Getting started!</h2>
+          <pre class="fragment" style="font-size: 1em; width: 30%"><code data-trim contenteditable class="ruby">
+# Gemfile
+gem 'perspectives'
+          </code></pre>
+          <pre class="fragment" style="font-size: 1em; width: 50%"><code data-trim contenteditable class="sh">
+rails generate perspectives:install
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Getting started!</h2>
+          <h4 style="margin-top: 50px">Break ERB/HAML views into Perspective + Mustache template</h4>
+        </section>
+
+        <section>
+          <h2>Getting started!</h2>
+          <h4>Add one line to your controller</h4>
+          <pre class="fragment" style="font-size: 1em; width: 90%"><code data-trim contenteditable class="ruby">
+class AnnotationsController < ApplicationController
+  def show
+    annotation = Annotation.find(params[:id])
+    respond_with(perspective('annotations/show',
+                              annotation: annotation))
+  end
+end
+          </code></pre>
+        </section>
+
+        <!-- <section> -->
+        <!--   <h2>Getting started!</h2> -->
+        <!--   <h4>One Line to your javascript (same api as pjax)</h4> -->
+        <!--   <pre class="fragment" style="font-size: 1em; width: 70%;"><code data-trim contenteditable class="javascript"> -->
+<!-- $(document).perspectives('a', '#perspectives') -->
+        <!--   </code></pre> -->
+        <!-- </section> -->
+
+        <section>
+          <h2>In this talk!</h2>
+          <ol>
+            <li><strike>What is the holy grail?</strike></li>
+            <li><strike>Existing Rails solutions</strike></li>
+            <li><strike>A new solution (for your consideration!)</strike></li>
+            <li><b style="color: orange;">What else does this new solution give us?</b></li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>An aside...</h2>
+          <h2 class="fragment">– these benefits were the original motivation!</h2>
+        </section>
+
+        <section>
+          <h2>#1: Separation of Concerns</h2>
+        </section>
+
+        <section>
+          <h2>ERB Version</h2>
+          <pre style="font-size: 0.9em; width: 90%"><code data-trim contenteditable class="mel">
+<blockquote>
+  <%= @annotation.referent %>
+</blockquote>
+
+<%= @annotation.body_as_html %>
+
+<% if @annotation.created_by == current_user || current_user.admin? %>
+  <%= link_to 'Edit', edit_annotation_path(@annotation) %>
+<% end %>
+          </code></pre>
+          <aside class="notes">
+            <ul>
+              <li>Looking back, the ERB version was clunky!</li>
+              <li>Put logic right in there for edit link</li>
+              <li>Not where you want your logic</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section>
+          <h2>Separation of concerns</h2>
+          <pre style="font-size: 1em; width:60%;"><code data-trim contenteditable>
+...
+{{#edit}}
+  <a href="{{edit_href}}">Edit</a>
+{{/edit}}
+          </code></pre>
+          <pre style="font-size: 1em; width:90%"><code data-trim contenteditable class="ruby">
+class Annotations::Show < Perspectives::Base
+  # ...
+  property(:edit) do
+    annotation.created_by == current_user || current_user.admin?
+  end
+  # ...
+end
+          </code></pre>
+          <aside class="notes">
+            <ul>
+              <li>Writing logic = should be writing ruby</li>
+              <li>Writing markup = writing mustache</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section>
+          <h2>#2: Testing</h2>
+          <img class="no-border no-adjust-background" width="500px" src="images/image_21.png">
+          <aside class="notes">
+          Apart from ease of use and familiarity, having a plain old ruby object at the view layer makes testing much easier. Testing ERB templates in isolation is difficult if not impossible. The closest we can get is a webdriver test, which is basically doing an educated grep for the content we expect. Oh, and it’s usually insanely slow.
+          </aside>
+        </section>
+
+        <section data-state="fullscreen">
+          <pre style="font-size: 0.9em; height: 90%; width: 70%"><code style="height: 80%" data-trim class="ruby">
+# spec/perspectives/annotations/show_spec.rb
+require 'spec_helper'
+
+describe Annotations::Show do
+  it 'should be easy to test!' do
+    user = double(:user)
+    annotation = double(:annotation, created_by: user)
+
+    annotations_show = described_class.new(
+                            {current_user: user},
+                            annotation: annotation)
+
+    annotations_show.edit.should be_true
+  end
+end
+          </code></pre>
+          <aside class="notes">
+            With plain old ruby objects, we can just create them and test each method easily.<br>
+            Here we just create a new Annotations::Show object, pass it a fake user object, and test that the email is equal to the test double's email. Simple! Also, any RailsConf talk these days has to have at least one testing slide...
+          </aside>
+        </section>
+        <section>
+          <h2>#3: Caching</h2>
+          <img src="images/image_22.png">
+        </section>
+
+        <section>
+          <h2>Caching</h2>
+          <pre style="width:70%; font-size: 1em"><code data-trim contenteditable class="ruby">
+class Annotations::Show < Perspectives::Base
+  param :annotation
+
+  cache { annotation }
+end
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Caching</h2>
+          <pre style="width:70%; font-size: 1em"><code data-trim contenteditable class="ruby">
+class Annotations::Show < Perspectives::Base
+  param :annotation
+
+  cache { annotation }
+
+  # cache_key:
+  #   "annotations/1-20140404025902750005000"
+end
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Caching</h2>
+          <pre style="width:70%; font-size: 1em"><code data-trim contenteditable class="ruby">
+class Annotations::Show < Perspectives::Base
+  param :annotation
+
+  cache { annotation }
+
+  delegate :created_by, to: :annotation
+  nested 'users/avatar', user: :created_by
+end
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Caching</h2>
+          <pre style="width:70%; font-size: 1em"><code data-trim contenteditable class="ruby">
+class Users::Avatar < Perspectives::Base
+  param :user
+
+  cache { user }
+
+  # cache_key:
+  #   "users/4-20140420203350976646000"
+end
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Caching</h2>
+          <pre style="width:70%; font-size: 1em"><code data-trim contenteditable class="ruby">
+class Annotations::Show < Perspectives::Base
+  param :annotation
+
+  cache { annotation }
+
+  delegate :created_by, to: :annotation
+  nested 'users/avatar', user: :created_by
+end
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Caching</h2>
+          <pre style="width:70%; font-size: 1em"><code data-trim contenteditable class="ruby">
+class Annotations::Show < Perspectives::Base
+  cache { annotation }
+  nested 'users/avatar', user: :created_by
+
+  # cache_key:
+  #   "annotations/1-20140404025902750005000"
+  #   +
+  #   "users/4-20140420203350976646000"
+  #   =
+end
+          </code></pre>
+          <h4 class="fragment">"annotations/1-20140404025902750005000/users/4-20140420203350976646000"</h4>
+        </section>
+
+        <section data-background="images/image_23.png">
+        </section>
+
+        <section>
+          <img style="float: left; width: 300px" src="images/image_23.png">
+          <h2>Drive off into the sunset?</h2>
+          <ul>
+            <li class="fragment">Nascent library / weekend project</li>
+            <li class="fragment">Still a bunch of stuff to be done!</li>
+            <li class="fragment">Answer to these Node.js libraries</li>
+            <li class="fragment">Key takeaway: share views in thick client world</li>
+          </ul>
+          <aside class="notes">
+            <ul>
+              <li>Can rails drive into the sunset?</li>
+              <li>IS node.js stealing our lunch?<li>
+              <li>Only time will tell!<li>
+            </ul>
+          </aside>
+        </section>
+
+        <section>
+          <style>
+            ul.last-slide li { margin-top: 30px; }
+          </style>
+
+          <h1>That's it!</h1>
+          <ul class="last-slide" style="font-size: 1.2em;">
+            <li><a href="https://github.com/RapGenius/perspectives">https://github.com/RapGenius/perspectives</a></li>
+            <li><a href="http://bit.ly/rgperspectives">http://bit.ly/rgperspectives</a> if you're lazy</li>
+            <!-- <li><a href="https://github.com/RapGenius/railsgenius">https://github.com/RapGenius/railsgenius</a></li> -->
+            <!-- <li><a href="http://bit.ly/railsgenius">http://bit.ly/railsgenius</a> if you're lazy</li> -->
+            <li>We're hiring! <a href="http://rapgenius.com/jobs">http://rapgenius.com/jobs</a></li>
+          </ul>
+        </section>
+
+        <!-- END -->
+      </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+    <script src="js/jquery-1.11.0.min.js"></script>
+
+    <script type="text/template" id="bad-erb-template">
+      <pre class="stretch"><code data-trim class="mel" style="word-wrap: break-word;">
+<div class="contextual">
+  <%= link_to(l(:label_news_new),
+              new_project_news_path(@project),
+              :class => 'icon icon-add',
+              :onclick => 'showAndScrollTo("add-news", "news_title"); return false;') if @project && User.current.allowed_to?(:manage_news, @project) %>
+  <%= watcher_link(@project.enabled_module('news'), User.current) if @project && User.current.logged? %>
+</div>
+
+<div id="add-news" style="display:none;">
+  <h2><%=l(:label_news_new)%></h2>
+  <%= labelled_form_for @news, :url => project_news_index_path(@project),
+                                            :html => { :id => 'news-form', :multipart => true } do |f| %>
+    <%= render :partial => 'news/form', :locals => { :f => f } %>
+    <%= submit_tag l(:button_create) %>
+    <%= preview_link preview_news_path(:project_id => @project), 'news-form' %> |
+    <%= link_to l(:button_cancel), "#", :onclick => '$("#add-news").hide()' %>
+  <% end if @project %>
+  <div id="preview" class="wiki"></div>
+</div>
+
+<h2><%=l(:label_news_plural)%></h2>
+
+<% if @newss.empty? %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% else %>
+...
+<% end %>
+<p class="pagination"><%= pagination_links_full @news_pages %></p>
+          </code></pre>
+    </script>
+
+    <script>
+      var elements = document.querySelectorAll('section[data-fill-with-bad-erb]')
+      var bad_erb = document.querySelector('#bad-erb-template').innerHTML
+
+      for (var i = 0; i < elements.length; i++) {
+        var content = document.createElement('DIV')
+        content.innerHTML = bad_erb
+
+        elements[i].appendChild(content)
+      }
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        width: 1280,
+        height: 720,
+        margin: 0,
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: 'night', // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+        backgroundTransition: 'slide',
+
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          // { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+          // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+      Reveal.addEventListener('slidechanged', function(e) {
+        var center = true
+
+        if (e.currentSlide.getAttribute('data-state') === 'iframe-fullscreen') {
+          center = false
+        }
+
+        Reveal.configure({ 'center': center })
+      }, false);
+
+      Reveal.addEventListener('fragmentshown', function(event) {
+        var $fragment = $(event.fragment)
+        if ($fragment.attr('data-action')) {
+          new Function($fragment.attr('data-action')).call(event.fragment)
+        }
+      }, false);
+    </script>
+
+  </body>
+</html>
